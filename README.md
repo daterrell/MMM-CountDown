@@ -1,7 +1,8 @@
 # MMM-CountDown
-![Screenshot](https://github.com/daterrell/MMM-CountDown/raw/master/screenshots/screenshot.png)
 
 This is a module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) which can count down the days to a date/event, or up from a date/time
+
+![Screenshot](https://github.com/daterrell/MMM-CountDown/.github/CountDown-1.png)
 
 ## Why?
 Yes, there's another CountDown module, and again I didn't like the style/output, and wanted to have a few customizations that I didn't think fit with [the original](https://github.com/boazarad/MMM-CountDown) by [Boaz](https://github.com/boazarad)
