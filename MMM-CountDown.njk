@@ -1,0 +1,10 @@
+{% if event %}
+  <div>
+  <div class="date normal medium">
+    {{ event }}
+  </div>
+  <div class="time bright xlarge light">
+    <div>{{ time }}</div>{% if label %}<sup class="dimmed">{{ label }}</sup>{% endif %}
+  </div>
+</div>
+{% endif %}

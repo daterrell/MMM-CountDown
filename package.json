@@ -1,0 +1,8 @@
+{
+  "name": "MMM-CountDown",
+  "version": "1.0.0",
+  "description": "Count down or up to/from a specific event",
+  "main": "MMM-CountDown.js",
+  "author": "Dave Terrell",
+  "license": "MIT"
+}
