@@ -14,7 +14,6 @@ Yes, there's another CountDown module, and again I didn't like the style/output,
   ```bash
   cd ~/MagicMirror/modules # adapt directory if you are using a different one
   git clone https://github.com/daterrell/MMM-CountDown.git
-  cd MMM-CountDown
   ```
 2. Add the module to your `config/config.js` file.
   ```js

@@ -56,26 +56,27 @@ Module.register("MMM-CountDown", {
         var diffDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
         if (Math.abs(diffDays) > 1) {
-            updateTemplateData(Math.abs(diffDays), this.config.daysLabel);
+            this.updateTemplateData(Math.abs(diffDays), this.config.daysLabel);
 
             if (diffDays <= -1 && !this.config.allowNegative) {
                 this.hide();
                 return null;
             }
         } else if (diffDays < 0 && diffHours < 24 && !this.config.toTime) {
-            updateTemplateData("TODAY!", null);
+            this.updateTemplateData("TODAY!", null);
         } else {
             this.updateFreq = "CLOCK_SECOND";
             var diffHours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var diffMinutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
             var diffSeconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-            updateTemplateData(`T-${this.pad(diffHours, 2)}:${this.pad(diffMinutes, 2)}:${this.pad(diffSeconds, 2)}`, null);
+            this.updateTemplateData(`T-${this.pad(diffHours, 2)}:${this.pad(diffMinutes, 2)}:${this.pad(diffSeconds, 2)}`, null);
         }
     },
 
     updateTemplateData(date, label) {
         this.templateData.date = date;
         this.templateData.label = label;
+        this.templateData.event = this.config.event;
         return this.templateData;
     },
 
