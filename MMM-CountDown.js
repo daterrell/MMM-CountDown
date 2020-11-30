@@ -49,7 +49,7 @@ class TemplateData {
     updateData() {
         if (this.timeDiff.diffDays >= 1) {
             this.date = this.timeDiff.diffDays;
-            if (!this.timeDiff.isPast) this.diffDays += 1;
+            if (!this.timeDiff.isPast) this.date += 1;
         } else if (this.timeDiff.diffDays === 0 &&
             this.isToTime === false) {
             this.date = "TODAY!";
