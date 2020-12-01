@@ -8,6 +8,11 @@ class TimeDiff {
     diffHours;
     diffMinutes;
     diffSeconds;
+
+    relHours;
+    relMinutes;
+    relSeconds;
+
     isPast;
 
     constructor(date) {
@@ -23,6 +28,11 @@ class TimeDiff {
         this.diffHours = Math.floor(timeDiff / TimeDiff.millisPerHour);
         this.diffMinutes = Math.floor(timeDiff / TimeDiff.millisPerMinute);
         this.diffSeconds = Math.floor(timeDiff / TimeDiff.millisPerSecond);
+
+        this.relHours = Math.floor((timeDiff % TimeDiff.millisPerDay) / TimeDiff.millisPerHour);
+        this.relMinutes = Math.floor((timeDiff % TimeDiff.millisPerHour) / TimeDiff.millisPerMinute);
+        this.relSeconds = Math.floor((timeDiff % TimeDiff.millisPerMinute) / TimeDiff.millisPerSecond);
+
         this.isPast = this.target.isBefore(now);
     }
 }
@@ -34,11 +44,13 @@ class TemplateData {
     event;
     date;
     label;
+    daysLabel;
 
-    constructor(event, timeDiff, isToTime) {
+    constructor(event, timeDiff, isToTime, daysLabel) {
         this.event = event;
         this.timeDiff = timeDiff;
         this.isToTime = isToTime;
+        this.daysLabel = this.label = daysLabel;
     }
 
     update() {
@@ -47,15 +59,13 @@ class TemplateData {
     }
 
     updateData() {
-        if (this.timeDiff.diffDays >= 1) {
-            this.date = this.timeDiff.diffDays;
-            if (!this.timeDiff.isPast) this.date += 1;
-        } else if (this.timeDiff.diffDays === 0 &&
-            this.isToTime === false) {
-            this.date = "TODAY!";
+        if (this.timeDiff.diffHours <= 24) {
+            this.date = `T-${this.pad(this.timeDiff.relHours, 2)}:${this.pad(this.timeDiff.relMinutes, 2)}:${this.pad(this.timeDiff.relSeconds, 2)}`;
             this.label = null;
+        } else if (this.timeDiff.diffDays >= 1) {
+            this.date = this.timeDiff.diffDays + 1;
         } else {
-            this.date = `T-${this.pad(timeDiff.diffHours, 2)}:${this.pad(timeDiff.diffMinutes, 2)}:${this.pad(timeDiff.diffSeconds, 2)}`;
+            this.date = "TODAY!";
             this.label = null;
         }
     }
@@ -105,7 +115,7 @@ Module.register("MMM-CountDown", {
     start: function () {
         console.log("Starting up " + this.name);
         this.timeDiff = new TimeDiff(this.config.date);
-        this.templateData = new TemplateData(this.config.event, this.timeDiff, this.config.toTime);
+        this.templateData = new TemplateData(this.config.event, this.timeDiff, this.config.toTime, this.config.daysLabel);
         this.update();
     },
 
