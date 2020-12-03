@@ -63,7 +63,10 @@ class TemplateData {
             this.date = `T-${this.pad(this.timeDiff.relHours, 2)}:${this.pad(this.timeDiff.relMinutes, 2)}:${this.pad(this.timeDiff.relSeconds, 2)}`;
             this.label = null;
         } else if (this.timeDiff.diffDays >= 1) {
-            this.date = this.timeDiff.diffDays + 1;
+            if (!this.timeDiff.isPast)
+                this.date = this.timeDiff.diffDays + 1;
+            else
+                this.date = this.timeDiff.diffDays;
         } else {
             this.date = "TODAY!";
             this.label = null;
@@ -139,7 +142,7 @@ Module.register("MMM-CountDown", {
 
     disable: function () {
         this.notificationReceived = function () { };
-        this.getTemplate = function() { };
+        this.getTemplate = function () { };
         this.hide();
     }
 });
