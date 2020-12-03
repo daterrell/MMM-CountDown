@@ -59,7 +59,7 @@ class TemplateData {
     }
 
     updateData() {
-        if (this.timeDiff.diffHours <= 24 & !this.timeDiff.isPast) {
+        if (this.timeDiff.diffHours <= 24 && !this.timeDiff.isPast) {
             this.date = `T-${this.pad(this.timeDiff.relHours, 2)}:${this.pad(this.timeDiff.relMinutes, 2)}:${this.pad(this.timeDiff.relSeconds, 2)}`;
             this.label = null;
         } else if (this.timeDiff.diffDays >= 1) {
@@ -139,6 +139,7 @@ Module.register("MMM-CountDown", {
 
     disable: function () {
         this.notificationReceived = function () { };
+        this.getTemplate = function() { };
         this.hide();
     }
 });
