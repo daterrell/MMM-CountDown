@@ -45,6 +45,7 @@ class TemplateData {
     date;
     label;
     daysLabel;
+    hidden;
 
     constructor(event, timeDiff, isToTime, daysLabel) {
         this.event = event;
@@ -78,6 +79,10 @@ class TemplateData {
         while (num.length < size) num = "0" + num;
         return num;
     }
+
+    hide(value) {
+        this.hidden = value;
+    }
 }
 
 Module.register("MMM-CountDown", {
@@ -86,16 +91,12 @@ Module.register("MMM-CountDown", {
         date: "3000-01-01",
         daysLabel: "days ",
         allowNegative: false,
-        toTime: false // Whether the countdown is to a specific time
+        toTime: false, // Whether the countdown is to a specific time
     },
 
     templateData: null,
 
     timeDiff: null,
-
-    getHeader: function () {
-        return false;
-    },
 
     getScripts: function () {
         return ["moment.js", "moment-timezone.js"];
@@ -129,8 +130,11 @@ Module.register("MMM-CountDown", {
     },
 
     update: function () {
-        if (this.shouldHide()) this.disable();
-        else this.updateDom();
+        if (this.shouldHide()) this.templateData.hide(true);
+        else {
+            this.templateData.hide(false);
+            this.updateDom();
+        }
     },
 
     shouldHide: function () {
