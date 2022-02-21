@@ -60,7 +60,7 @@ class TemplateData {
     }
 
     updateData() {
-        if (this.timeDiff.diffHours <= 24 && !this.timeDiff.isPast) {
+        if (this.timeDiff.diffHours < 24 && !this.timeDiff.isPast) {
             this.date = `T-${this.pad(this.timeDiff.relHours, 2)}:${this.pad(this.timeDiff.relMinutes, 2)}:${this.pad(this.timeDiff.relSeconds, 2)}`;
             this.label = null;
         } else if (this.timeDiff.diffDays >= 1) {
@@ -92,6 +92,8 @@ Module.register("MMM-CountDown", {
         daysLabel: "days ",
         allowNegative: false,
         toTime: false, // Whether the countdown is to a specific time
+        isAnnual: false, // e.g. a birthday
+        annualDaysDiff: 60,
     },
 
     templateData: null,
@@ -118,7 +120,9 @@ Module.register("MMM-CountDown", {
     // set update interval
     start: function () {
         console.log("Starting up " + this.name);
-        this.timeDiff = new TimeDiff(this.config.date);
+        var updatedDate = this.getUpdatedDate();
+
+        this.timeDiff = new TimeDiff(updatedDate);
         this.templateData = new TemplateData(this.config.event, this.timeDiff, this.config.toTime, this.config.daysLabel);
         this.update();
     },
@@ -141,7 +145,13 @@ Module.register("MMM-CountDown", {
         return this.config.allowNegative === false &&
             this.timeDiff.isPast &&
             (this.timeDiff.diffHours >= 24 ||
-                this.config.isToTime);
+                this.config.isToTime) || 
+            (this.config.isAnnual && this.timeDiff.diffDays > this.config.annualDaysDiff);
+    },
+
+    getUpdatedDate() {
+        if (!this.config.isAnnual) return this.config.date;
+        return new moment(this.config.date).year(new moment().year()).format('YYYY-MM-DD');
     },
 
     disable: function () {
