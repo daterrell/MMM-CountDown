@@ -36,3 +36,5 @@ Yes, there's another CountDown module, and again I didn't like the style/output,
 | `daysLabel`      | *Required* What to show for "days" label                                                                              |
 | `toTime`         | *Optional* *false* When counting down to a time, don't show "TODAY!", but instead count down to a specific time       |
 | `allowNegative`  | *Optional* Show a countUP timer; time/days since a specific date (ex. baby is X days old)                             |
+| `isAnnual`       | *Optional* The configured `date` happens on the same date anually; show automatically within `annualDaysDiff` days    |
+| `annualDaysDiff` | *Optional* When `isAnnual` is `true`, show this countdown automatically when `date` is this many days away            |
