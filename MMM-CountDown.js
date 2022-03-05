@@ -154,7 +154,7 @@ Module.register("MMM-CountDown", {
     },
 
     isPastToTimeEvent: function () {
-        return this.timeDiff.diffHours >= 24 ||
+        return this.timeDiff.diffHours >= 24 &&
             this.config.isToTime;
     },
 
