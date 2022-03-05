@@ -150,6 +150,7 @@ Module.register("MMM-CountDown", {
 
     isPastEvent: function () {
         return this.config.allowNegative === false &&
+            this.timeDiff.diffHours >= 24 &&
             this.timeDiff.isPast;
     },
 
