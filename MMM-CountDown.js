@@ -117,7 +117,6 @@ Module.register("MMM-CountDown", {
         return this.templateData;
     },
 
-    // set update interval
     start: function () {
         console.log("Starting up " + this.name);
         var updatedDate = this.getUpdatedDate();
@@ -134,19 +133,29 @@ Module.register("MMM-CountDown", {
     },
 
     update: function () {
-        if (this.shouldHide()) this.templateData.hide(true);
-        else {
-            this.templateData.hide(false);
-            this.updateDom();
-        }
+        this.templateData.hide(this.shouldHide());
+        this.updateDom();
     },
 
     shouldHide: function () {
+        return shouldNotShowYet() ||
+            isPastEvent() || 
+            isPastToTimeEvent();
+    },
+
+    shouldNotShowYet: function () {
+        return this.config.isAnnual &&
+            this.timeDiff.diffDays > this.config.annualDaysDiff;
+    },
+
+    isPastEvent: function () {
         return this.config.allowNegative === false &&
-            this.timeDiff.isPast &&
-            (this.timeDiff.diffHours >= 24 ||
-                this.config.isToTime) || 
-            (this.config.isAnnual && this.timeDiff.diffDays > this.config.annualDaysDiff);
+            this.timeDiff.isPast;
+    },
+
+    isPastToTimeEvent: function () {
+        return this.timeDiff.diffHours >= 24 ||
+            this.config.isToTime;
     },
 
     getUpdatedDate() {
