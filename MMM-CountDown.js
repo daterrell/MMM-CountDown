@@ -138,9 +138,9 @@ Module.register("MMM-CountDown", {
     },
 
     shouldHide: function () {
-        return shouldNotShowYet() ||
-            isPastEvent() || 
-            isPastToTimeEvent();
+        return this.shouldNotShowYet() ||
+            this.isPastEvent() || 
+            this.isPastToTimeEvent();
     },
 
     shouldNotShowYet: function () {
