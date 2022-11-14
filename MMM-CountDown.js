@@ -94,6 +94,8 @@ Module.register("MMM-CountDown", {
         toTime: false, // Whether the countdown is to a specific time
         isAnnual: false, // e.g. a birthday
         annualDaysDiff: 60,
+        isMonthly: false,
+        dayOfMonth: 24,
     },
 
     templateData: null,
@@ -148,6 +150,9 @@ Module.register("MMM-CountDown", {
     },
 
     shouldHide: function () {
+        if(this.config.isMonthly) {
+            return false;
+        }
         return this.shouldNotShowYet() ||
             this.isPastEvent() ||
             this.isPastToTimeEvent();
@@ -169,7 +174,22 @@ Module.register("MMM-CountDown", {
             this.config.isToTime;
     },
 
+    getNextMonthlyDate: function () {
+        toDay = moment().date();
+        month = moment().month();
+        year = moment().year();
+        if(toDay > this.config.dayOfMonth){
+            month = month+1;
+        }
+        if (month == 12) {
+            month = 0
+            year = year+1;
+        }
+        return new moment().year(year).month(month).date(this.config.dayOfMonth).format('YYYY-MM-DD');
+    },
+
     getUpdatedDate() {
+        if (this.config.isMonthly) return this.getNextMonthlyDate();
         if (!this.config.isAnnual) return this.config.date;
 
         var date = new moment(this.config.date).year(new moment().year());
