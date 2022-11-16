@@ -5,7 +5,7 @@
   <div class="date normal medium">
     {{ event }}
   </div>
-  <div class="time bright xlarge light">
+  <div class="time bright xlarge light {% if config.isReminder %}red{% endif %}">
     <div>{{ date }}{% if label %}<sup class="dimmed">{{ label }}</sup>{% endif %}</div>
   </div>
 </div>
