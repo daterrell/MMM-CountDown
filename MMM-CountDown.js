@@ -14,6 +14,7 @@ class TimeDiff {
     relSeconds;
 
     isPast;
+    isFuture;
 
     constructor(date) {
         this.target = moment(date);
@@ -34,6 +35,7 @@ class TimeDiff {
         this.relSeconds = Math.floor((timeDiff % TimeDiff.millisPerMinute) / TimeDiff.millisPerSecond);
 
         this.isPast = this.target.isBefore(now);
+        this.isFuture = this.target.isAfter(now);
     }
 }
 
@@ -45,13 +47,16 @@ class TemplateData {
     date;
     label;
     daysLabel;
+    config;
+
     hidden = false;
 
-    constructor(event, timeDiff, isToTime, daysLabel) {
+    constructor(event, timeDiff, isToTime, daysLabel, config) {
         this.event = event;
         this.timeDiff = timeDiff;
         this.isToTime = isToTime;
         this.daysLabel = this.label = daysLabel;
+        this.config = config;
     }
 
     update() {
@@ -68,6 +73,10 @@ class TemplateData {
                 this.date = this.timeDiff.diffDays + 1;
             else
                 this.date = this.timeDiff.diffDays;
+        } else if (this.config.isReminder) {
+            this.date = this.config.event;
+            this.label = null;
+            this.event = "!";
         } else {
             this.date = "TODAY!";
             this.label = null;
@@ -95,7 +104,8 @@ Module.register("MMM-CountDown", {
         isAnnual: false, // e.g. a birthday
         annualDaysDiff: 60,
         isMonthly: false,
-        dayOfMonth: 24,
+        dayOfMonth: 01,
+        isReminder: false
     },
 
     templateData: null,
@@ -124,7 +134,7 @@ Module.register("MMM-CountDown", {
         var updatedDate = this.getUpdatedDate();
 
         this.timeDiff = new TimeDiff(updatedDate);
-        this.templateData = new TemplateData(this.config.event, this.timeDiff, this.config.toTime, this.config.daysLabel);
+        this.templateData = new TemplateData(this.config.event, this.timeDiff, this.config.toTime, this.config.daysLabel, this.config);
         this.update();
 
         const updateTimer = () => {
@@ -153,9 +163,17 @@ Module.register("MMM-CountDown", {
         if(this.config.isMonthly) {
             return false;
         }
+        if (this.config.isReminder) {
+            return this.timeDiff.isFuture ||
+                    this.isPastEvent();
+        }
         return this.shouldNotShowYet() ||
             this.isPastEvent() ||
             this.isPastToTimeEvent();
+    },
+
+    isItToday: function () {
+        return this.config.isReminder && !this.timeDiff.isFuture;
     },
 
     shouldNotShowYet: function () {

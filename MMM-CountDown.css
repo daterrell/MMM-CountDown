@@ -7,3 +7,7 @@
 .MMM-CountDown .time {
   text-align: center;
 }
+
+.MMM-CountDown .red {
+  color: red;
+}
