@@ -193,7 +193,11 @@ Module.register("MMM-CountDown", {
             month = 0
             year = year+1;
         }
-        return new moment().year(year).month(month).date(this.config.dayOfMonth).format('YYYY-MM-DD');
+        target = new moment().year(year).month(month).date(this.config.dayOfMonth);
+        if (target.isoWeekday() === 6 || target.isoWeekday() === 7) {
+            target = target.isoWeekday(5);
+        }
+        return target.format('YYYY-MM-DD');
     },
 
     getUpdatedDate() {
