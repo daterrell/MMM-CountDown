@@ -45,7 +45,7 @@ class TemplateData {
     date;
     label;
     daysLabel;
-    hidden;
+    hidden = false;
 
     constructor(event, timeDiff, isToTime, daysLabel) {
         this.event = event;
@@ -124,12 +124,22 @@ Module.register("MMM-CountDown", {
         this.timeDiff = new TimeDiff(updatedDate);
         this.templateData = new TemplateData(this.config.event, this.timeDiff, this.config.toTime, this.config.daysLabel);
         this.update();
-    },
 
-    notificationReceived: function (notification) {
-        if (notification === "CLOCK_SECOND") {
+        const updateTimer = () => {
             this.update();
-        }
+
+            var delay = 100;
+
+            if (this.templateData.hidden || this.timeDiff.diffHours > 24) {
+                delay = 60000 - moment().milliseconds() + 50;
+            } else {
+                delay = 1000 - moment().milliseconds() + 50;
+            }
+
+            setTimeout(updateTimer, delay);
+        };
+
+        setTimeout(updateTimer, 250);
     },
 
     update: function () {
@@ -139,7 +149,7 @@ Module.register("MMM-CountDown", {
 
     shouldHide: function () {
         return this.shouldNotShowYet() ||
-            this.isPastEvent() || 
+            this.isPastEvent() ||
             this.isPastToTimeEvent();
     },
 
