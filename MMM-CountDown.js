@@ -171,7 +171,13 @@ Module.register("MMM-CountDown", {
 
     getUpdatedDate() {
         if (!this.config.isAnnual) return this.config.date;
-        return new moment(this.config.date).year(new moment().year()).format('YYYY-MM-DD');
+
+        var date = new moment(this.config.date).year(new moment().year());
+
+        if (date.isBefore(new moment()))
+            date = date.add(1, 'y');
+
+        return date.format('YYYY-MM-DD');
     },
 
     disable: function () {
