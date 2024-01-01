@@ -173,8 +173,10 @@ Module.register("MMM-CountDown", {
         if (!this.config.isAnnual) return this.config.date;
 
         var date = new moment(this.config.date).year(new moment().year());
+        var now = new moment();
+        var hourDiff = moment.duration(now.diff(date)).asHours();
 
-        if (date.isBefore(new moment()))
+        if (date.isBefore(now) && hourDiff > 24)
             date = date.add(1, 'y');
 
         return date.format('YYYY-MM-DD');
