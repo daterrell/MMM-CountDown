@@ -104,7 +104,7 @@ Module.register("MMM-CountDown", {
         isAnnual: false, // e.g. a birthday
         annualDaysDiff: 60,
         isMonthly: false,
-        dayOfMonth: 01,
+        dayOfMonth: "01",
         isReminder: false
     },
 
